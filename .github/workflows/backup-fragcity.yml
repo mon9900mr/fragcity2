@@ -6,6 +6,8 @@ on:
     paths:
       - ".github/workflows/backup-fragcity.yml"
   workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
