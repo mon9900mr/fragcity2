@@ -1,0 +1,27 @@
+name: Backup FragCity into FragCity2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/backup-fragcity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    name: Mirror complete repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Mirror FragCity refs and history into FragCity2
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --mirror https://github.com/mon9900mr/FragCity.git source.git
+          git -C source.git remote set-url --push origin "https://x-access-token:${GH_TOKEN}@github.com/mon9900mr/fragcity2.git"
+          git -C source.git push --mirror
